@@ -8,6 +8,7 @@ from urllib.parse import urlparse
 import hashlib
 import json
 import requests
+import argparse
 
 
 @dataclass
@@ -276,4 +277,19 @@ def resolve_conflicts():
 # This is a guard block that only executes main if the file
 # executing directly
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    parser = argparse.ArgumentParser(
+        description="Launch a blockchain node on a specific port"
+    )
+    parser.add_argument(
+        "--port",
+        "-p",
+        type=int,
+        help="""The port that the blockchain node 
+                        will except API requests on""",
+    )
+    args = parser.parse_args()
+
+    port = args.port if args.port is not None else 5000
+
+    print(f"Starting blockchain node on port: {port}...")
+    app.run(host="0.0.0.0", port=port)
